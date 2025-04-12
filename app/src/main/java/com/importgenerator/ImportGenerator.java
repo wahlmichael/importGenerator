@@ -9,6 +9,7 @@ class ImportGenerator {
   JScrollPane currentForm;
   JTable table;
   TableModel tableModel;
+  Config config = new Config();
 
   private void createAndShowGUI() {
     JFrame frame = new JFrame("HelloWorldSwing");
@@ -51,6 +52,9 @@ class ImportGenerator {
     frame.add(button);
 
     frame.setVisible(true);
+    if (config.getFibNxPath().isEmpty()) {
+      config.getFibNxPathFromUser();
+    }
   }
 
   JScrollPane generateForm(ImportType importType) {
@@ -79,5 +83,6 @@ class ImportGenerator {
   public static void main(String[] args) {
     ImportGenerator importGenerator = new ImportGenerator();
     SwingUtilities.invokeLater(() -> importGenerator.createAndShowGUI());
+    System.out.println("2");
   }
 }
