@@ -13,6 +13,7 @@ public class Config {
   private String appConfigPath;
   private Properties configProps;
   final private String FIB_NX_PATH_KEY = "fibNxPath";
+  final private String PATH_TO_IMPORTS = "/apps/lmp-server/designs/jackhenry";
 
   Config() {
     fibNxPath = "";
@@ -46,7 +47,7 @@ public class Config {
     final JFileChooser fc = new JFileChooser();
     fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
     fc.showOpenDialog(null);
-    nxPath = fc.getSelectedFile().toString();
+    nxPath = fc.getSelectedFile().toString() + PATH_TO_IMPORTS;
 
     try {
       FileOutputStream outputStream = new FileOutputStream(appConfigPath);

@@ -21,7 +21,10 @@ class ImportGenerator {
     label.setBounds(20, 20, 200, 30);
     frame.add(label);
 
-    ImportType[] types = createImportTypes();
+    // getting imports
+    ImportGrabber importGrabber = new ImportGrabber(config.getFibNxPath());
+    ImportType[] types = importGrabber.getImportTypes();
+
     JComboBox<ImportType> dropDown = new JComboBox<ImportType>(types);
     dropDown.setBounds(200, 100, 100, 50);
 
@@ -65,19 +68,6 @@ class ImportGenerator {
     JScrollPane scrollPane = new JScrollPane(table);
 
     return scrollPane;
-  }
-
-  private ImportType[] createImportTypes() {
-    Field field1 = new Field("Primary Identifier", "Number");
-    Field field2 = new Field("Client Identifier", "String");
-    Field field3 = new Field("Primary Identifier", "Number");
-    Field field4 = new Field("Program Id", "String");
-    Field[] fields1 = { field1, field2 };
-    Field[] fields2 = { field3, field4 };
-    ImportType type1 = new ImportType("RAZR Common Account Import", fields1);
-    ImportType type2 = new ImportType("RAZR Common Person Import", fields2);
-    ImportType[] types = { type1, type2 };
-    return types;
   }
 
   public static void main(String[] args) {
