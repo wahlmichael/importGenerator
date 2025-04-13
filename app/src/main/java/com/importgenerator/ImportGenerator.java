@@ -12,7 +12,7 @@ class ImportGenerator {
   Config config = new Config();
 
   private void createAndShowGUI() {
-    JFrame frame = new JFrame("HelloWorldSwing");
+    JFrame frame = new JFrame("Vandelay Industries");
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frame.setSize(400, 500);
     frame.setLayout(null);
@@ -36,7 +36,7 @@ class ImportGenerator {
         frame.remove(currentForm);
       }
       currentForm = form;
-      form.setBounds(50, 200, 300, 150);
+      form.setBounds(50, 200, 800, 150);
       frame.add(form);
       frame.revalidate();
       frame.repaint();

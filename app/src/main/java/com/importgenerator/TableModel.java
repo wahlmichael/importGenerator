@@ -4,7 +4,7 @@ import javax.swing.table.AbstractTableModel;
 
 class TableModel extends AbstractTableModel {
   private String[] columnNames;
-  private String[][] data = { { "something", "124345" } };
+  private String[][] data = {};
 
   TableModel(Field[] fields) {
     columnNames = new String[fields.length];

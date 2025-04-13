@@ -1,14 +1,7 @@
 package com.importgenerator;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-@JsonIgnoreProperties(ignoreUnknown = true)
 class Field {
-  @JsonProperty("Name")
   String name;
-  @JsonProperty("AttributeType")
   String type;
 
   Field(String fieldName, String fieldType) {
