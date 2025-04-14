@@ -50,7 +50,7 @@ public class CsvBuilder {
     }
     fileContent += "\n";
     for (int j = 0; j < data.length; j++) {
-      for (int k = 0; k < data[j].length; k++) {
+      for (int k = 0; k < data[j].length - 1; k++) {
         fileContent += data[j][k] + "|";
       }
       if (j < data.length - 1) {

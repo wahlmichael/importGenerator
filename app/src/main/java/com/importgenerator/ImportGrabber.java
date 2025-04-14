@@ -73,8 +73,15 @@ public class ImportGrabber {
           JsonNode importColumnAttributeNode = importColumnsIterator.next().path("ValueObject")
               .path("ImportColumnAttribute");
           String columnName = importColumnAttributeNode.path("Name").path("en").toString();
+          columnName = removeQuotesFromJsonString(columnName);
+          String columnCode = importColumnAttributeNode.path("Code").toString();
+          columnCode = removeQuotesFromJsonString(columnCode);
           String columnType = importColumnAttributeNode.path("AttributeType").toString();
-          Field column = new Field(columnName, columnType);
+          columnType = removeQuotesFromJsonString(columnType);
+          Boolean isRequired = importColumnAttributeNode.path("Required").asBoolean();
+          String defaultValue = importColumnAttributeNode.path("DefaultValue").toString();
+          defaultValue = removeQuotesFromJsonString(defaultValue);
+          Field column = new Field(columnName, columnCode, columnType, isRequired, defaultValue);
           importFields[j] = column;
         }
         ImportType fullImport = new ImportType(importName, importFields);
@@ -93,5 +100,15 @@ public class ImportGrabber {
       iterator.next();
     }
     return i;
+  }
+
+  private String removeQuotesFromJsonString(String string) {
+    String removedQuotesStr;
+    if (string.length() > 0 && string.startsWith("\"")) {
+      removedQuotesStr = string.substring(1, string.length() - 1);
+    } else {
+      removedQuotesStr = string;
+    }
+    return removedQuotesStr;
   }
 }
