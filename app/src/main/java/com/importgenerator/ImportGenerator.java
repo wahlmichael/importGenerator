@@ -8,20 +8,20 @@ class ImportGenerator {
   JScrollPane currentForm;
   JTable table;
   TableModel tableModel;
-  Config config = new Config();
 
   // frame.setVisible(true);
   // if (config.getFibNxPath().isEmpty()) {
   // config.getFibNxPathFromUser();
   // }
 
-  private void createAndShowGUI() {
+  private void createAndShowGUI(Config config) {
     ImportGrabber importGrabber = new ImportGrabber(config.getFibNxPath());
     ImportType[] types = importGrabber.getImportTypes();
-    new GuiFrame(types);
+    new GuiFrame(config, types);
   }
 
   public static void main(String[] args) {
+    Config config = new Config();
     ImportGenerator importGenerator = new ImportGenerator();
     for (LookAndFeelInfo lafInfo : UIManager.getInstalledLookAndFeels()) {
       System.out.println(lafInfo.getClassName());
@@ -33,6 +33,6 @@ class ImportGenerator {
         | UnsupportedLookAndFeelException e) {
       e.printStackTrace();
     }
-    SwingUtilities.invokeLater(() -> importGenerator.createAndShowGUI());
+    SwingUtilities.invokeLater(() -> importGenerator.createAndShowGUI(config));
   }
 }
