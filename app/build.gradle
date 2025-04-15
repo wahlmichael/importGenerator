@@ -34,6 +34,14 @@ dependencies {
     implementation libs.jackson
 }
 
+sourceSets {
+    main {
+        resources {
+            srcDirs = ['src/main/resources']
+          }
+      }
+  }
+
 // Apply a specific Java toolchain to ease working on different environments.
 java {
     toolchain {
