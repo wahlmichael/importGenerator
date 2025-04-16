@@ -139,7 +139,6 @@ public class GuiFrame extends JFrame {
     table.setGridColor(Color.LIGHT_GRAY);
     table.setSelectionBackground(new Color(232, 242, 254));
     table.setSelectionForeground(Color.BLACK);
-    table.setSurrendersFocusOnKeystroke(true);
     JTableHeader header = table.getTableHeader();
     header.setFont(new Font("Helvetica", Font.PLAIN, 14));
     header.setPreferredSize(new Dimension(175, 55));
