@@ -5,31 +5,25 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class CsvBuilder {
-  public static void createCsv(String[] columnNames, String[][] data) {
-    System.out.println("creatingtable");
-    createDir();
-    File file = getFile();
+  public static Boolean wasLastSuccess = false;
+
+  public static void createCsv(String[] columnNames, String[][] data, String dir, String importName) {
+    File file = getFile(dir, importName);
     String fileContent = buildFileContent(columnNames, data);
     writeToFile(file, fileContent);
   }
 
-  private static void createDir() {
-    File dir = new File("~/Documents/ImportFiles");
-    if (!dir.exists()) {
-      dir.mkdirs();
-    }
-  }
-
-  private static File getFile() {
+  private static File getFile(String dir, String importName) {
     File file;
-    String filePath;
+    String fileName;
     int attempts = 0;
+    String importNameNoSpaces = importName.replaceAll("\\s+", "");
     do {
-      filePath = "Test" + (attempts > 0 ? attempts : "") + ".csv";
-      file = new File(filePath);
+      fileName = dir + "/" + importNameNoSpaces + (attempts > 0 ? attempts : "") + ".csv";
+      file = new File(fileName);
       attempts++;
     } while (file.exists());
-
+    System.out.println(file);
     try {
       if (file.createNewFile()) {
         System.out.println("File Created");
@@ -66,9 +60,11 @@ public class CsvBuilder {
       writer.write(content);
       writer.close();
       System.out.println(content);
+      wasLastSuccess = true;
     } catch (IOException e) {
       System.out.println("An error occured");
       e.printStackTrace();
+      wasLastSuccess = false;
     }
   }
 }

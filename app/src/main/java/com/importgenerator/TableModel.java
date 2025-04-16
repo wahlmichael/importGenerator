@@ -64,6 +64,7 @@ class TableModel extends AbstractTableModel {
   }
 
   private void setData(String[][] newData) {
+    System.out.println(newData.length);
     this.data = newData;
   }
 
@@ -86,5 +87,21 @@ class TableModel extends AbstractTableModel {
     setData(copyOfData);
     this.fireTableRowsInserted(data.length, data.length);
 
+  }
+
+  public void deleteRow() {
+    if (data.length == 1)
+      return;
+    String[][] copyOfData = Arrays.copyOfRange(data, 0, data.length - 1);
+    setData(copyOfData);
+    this.fireTableRowsDeleted(copyOfData.length - 1, copyOfData.length - 1);
+  }
+
+  public void duplicateRow() {
+    String[][] copyOfData = Arrays.copyOfRange(data, 0, data.length + 1);
+    String[] dupedRow = Arrays.copyOfRange(data[data.length - 1], 0, fields.length);
+    copyOfData[data.length] = dupedRow;
+    setData(copyOfData);
+    this.fireTableRowsInserted(data.length, data.length);
   }
 }
