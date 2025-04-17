@@ -209,7 +209,7 @@ public class GuiFrame extends JFrame {
   }
 
   private void buildStatusBar() {
-    statusLabel = new JLabel("Ready");
+    statusLabel = new JLabel(Quotes.getRandomQuote());
     statusLabel.setFont(new Font("Verdana", Font.ITALIC, 12));
     statusLabel.setForeground(new Color(100, 100, 100));
     statusLabel.setBorder(BorderFactory.createEmptyBorder(4, 10, 4, 10));
@@ -298,6 +298,9 @@ public class GuiFrame extends JFrame {
     ActionListener action = new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
+        if (table.isEditing()) {
+          table.getCellEditor().stopCellEditing();
+        }
         CsvBuilder.createCsv(tableModel.getColumnCodes(), tableModel.getData(), config.getOutputPath(),
             comboBox.getSelectedItem().toString());
         if (CsvBuilder.wasLastSuccess) {
@@ -417,7 +420,7 @@ public class GuiFrame extends JFrame {
     new Timer(4000, new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        statusLabel.setText("Ready");
+        statusLabel.setText(Quotes.getRandomQuote());
         statusLabel.setForeground(new Color(100, 100, 100));
         ((Timer) e.getSource()).stop();
       }

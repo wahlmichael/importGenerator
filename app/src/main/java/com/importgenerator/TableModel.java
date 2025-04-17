@@ -64,7 +64,6 @@ class TableModel extends AbstractTableModel {
   }
 
   private void setData(String[][] newData) {
-    System.out.println(newData.length);
     this.data = newData;
   }
 
@@ -81,6 +80,12 @@ class TableModel extends AbstractTableModel {
         defaultValue = fields[i].getDefaultValue();
       } else {
         defaultValue = "";
+      }
+      System.out.println(defaultValue);
+      if (defaultValue.equals("true")) {
+        defaultValue = "1";
+      } else if (defaultValue.equals("false")) {
+        defaultValue = "0";
       }
       copyOfData[data.length][i] = defaultValue;
     }

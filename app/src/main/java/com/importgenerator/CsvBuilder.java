@@ -38,17 +38,25 @@ public class CsvBuilder {
   }
 
   private static String buildFileContent(String[] columnNames, String[][] data) {
-    String fileContent = "";
+    String fileContent = "Header\n";
     for (int i = 0; i < columnNames.length; i++) {
-      fileContent += columnNames[i] + "|";
+      fileContent += columnNames[i];
+      if (i < columnNames.length - 1) {
+        fileContent += "|";
+      }
     }
     fileContent += "\n";
     for (int j = 0; j < data.length; j++) {
-      for (int k = 0; k < data[j].length - 1; k++) {
-        fileContent += data[j][k] + "|";
+      for (int k = 0; k < data[j].length; k++) {
+        fileContent += data[j][k];
+        if (k < data[j].length - 1) {
+          fileContent += "|";
+        } else {
+          fileContent += "\n";
+        }
       }
-      if (j < data.length - 1) {
-        fileContent += "\n";
+      if (j == data.length - 1) {
+        fileContent += "Footer";
       }
     }
     return fileContent;
