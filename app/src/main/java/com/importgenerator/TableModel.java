@@ -81,7 +81,6 @@ class TableModel extends AbstractTableModel {
       } else {
         defaultValue = "";
       }
-      System.out.println(defaultValue);
       if (defaultValue.equals("true")) {
         defaultValue = "1";
       } else if (defaultValue.equals("false")) {

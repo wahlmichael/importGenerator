@@ -1,8 +1,12 @@
 package com.importgenerator;
 
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Properties;
 
 import javax.swing.JFileChooser;
@@ -10,20 +14,19 @@ import javax.swing.JFileChooser;
 public class Config {
   private String fibNxPath;
   private String outputPath;
-  private String rootPath;
-  private String appConfigPath;
   private Properties configProps;
-  final private String FIB_NX_PATH_KEY = "fibNxPath";
-  final private String OUTPUT_PATH_KEY = "outputPath";
-  final private String PATH_TO_IMPORTS = "/apps/lmp-server/designs/jackhenry";
+  private final String FIB_NX_PATH_KEY = "fibNxPath";
+  private final String OUTPUT_PATH_KEY = "outputPath";
+  private final String PATH_TO_IMPORTS = "/apps/lmp-server/designs/fiRewards";
+  private final Path writableConfigPath = Paths
+      .get(System.getProperty("user.home"), ".importgenerator", "app.properties");
+  private final String appConfigPath = "config/app.properties";
 
   Config() {
-    fibNxPath = "";
-    rootPath = System.getProperty("user.dir");
-    appConfigPath = rootPath + "/config/app.properties";
     configProps = new Properties();
-    getFibNxPathFromConfig();
-    getOutputPathFromConfig();
+    loadConfig();
+    fibNxPath = configProps.getProperty(FIB_NX_PATH_KEY, "");
+    outputPath = configProps.getProperty(OUTPUT_PATH_KEY, "");
   }
 
   public String getFibNxPath() {
@@ -42,15 +45,34 @@ public class Config {
     this.outputPath = outputPath;
   }
 
-  private void getFibNxPathFromConfig() {
-    String nxPath;
+  private void loadConfig() {
+    InputStream inputStream = null;
     try {
-      configProps.load(new FileInputStream(appConfigPath));
+      if (Files.exists(writableConfigPath)) {
+        inputStream = Files.newInputStream(writableConfigPath);
+        System.out.println("Reading config from " + writableConfigPath);
+      } else {
+        inputStream = getClass().getClassLoader().getResourceAsStream(appConfigPath);
+        System.out.println("Reading default config from classpath: " + appConfigPath);
+      }
+
+      if (inputStream != null) {
+        configProps.clear();
+        configProps.load(inputStream);
+        System.out.println("Loaded config");
+      } else {
+        System.err.println("No config file found");
+      }
     } catch (IOException e) {
-      System.err.println(e);
+      System.err.println("failed to load config" + e.getMessage());
+    } finally {
+      if (inputStream != null) {
+        try {
+          inputStream.close();
+        } catch (IOException e) {
+        }
+      }
     }
-    nxPath = configProps.getProperty(FIB_NX_PATH_KEY);
-    setFibNxPath(nxPath);
   }
 
   public void getFibNxPathFromUser() {
@@ -59,11 +81,11 @@ public class Config {
     fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
     fc.showOpenDialog(null);
     nxPath = fc.getSelectedFile().toString() + PATH_TO_IMPORTS;
-
     try {
-      FileOutputStream outputStream = new FileOutputStream(appConfigPath);
+      Files.createDirectories(writableConfigPath.getParent());
+      OutputStream outputStream = Files.newOutputStream(writableConfigPath);
       configProps.setProperty(FIB_NX_PATH_KEY, nxPath);
-      configProps.store(outputStream, "properties");
+      configProps.store(outputStream, "Updated NX Path");
       outputStream.close();
     } catch (IOException e) {
       System.err.println(e);
@@ -72,28 +94,17 @@ public class Config {
     setFibNxPath(nxPath);
   }
 
-  private void getOutputPathFromConfig() {
-    String outputPath;
-    try {
-      configProps.load(new FileInputStream(appConfigPath));
-    } catch (IOException e) {
-      System.err.println(e);
-    }
-    outputPath = configProps.getProperty(OUTPUT_PATH_KEY);
-    setOutputPath(outputPath);
-  }
-
   public void getOutputPathFromUser() {
     String outputPath;
     final JFileChooser fc = new JFileChooser();
     fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
     fc.showOpenDialog(null);
     outputPath = fc.getSelectedFile().toString();
-
     try {
-      FileOutputStream outputStream = new FileOutputStream(appConfigPath);
+      Files.createDirectories(writableConfigPath.getParent());
+      OutputStream outputStream = Files.newOutputStream(writableConfigPath);
       configProps.setProperty(OUTPUT_PATH_KEY, outputPath);
-      configProps.store(outputStream, "properties");
+      configProps.store(outputStream, "Updated Output Path");
       outputStream.close();
     } catch (IOException e) {
       System.err.println(e);

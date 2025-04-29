@@ -2,4 +2,14 @@
 .gradle
 
 # Ignore Gradle build output directory
-build
+build/
+bin/
+app/build/
+app/bin/
+*.class
+
+.DS_Store
+
+.classpath
+.project
+.settings/
